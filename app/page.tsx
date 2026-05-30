@@ -103,7 +103,7 @@ export default function DSATracker() {
 
     const userId = session.user.id;
     const cacheKey = `dsa_completed_${userId}`;
-    
+
     // Optimistic UI Update
     const newCompleted = new Set(completed);
     const wasCompleted = newCompleted.has(id);
@@ -145,7 +145,7 @@ export default function DSATracker() {
 
   if (!isClient || isSessionPending) {
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-creamy-bg dark:bg-matte-bg">
+      <div className="h-[100dvh] w-screen flex flex-col items-center justify-center bg-creamy-bg dark:bg-matte-bg">
         <Loader2 className="animate-spin text-black dark:text-white" size={32} />
         <p className="font-sans text-xs text-gray-500 dark:text-matte-muted uppercase tracking-widest mt-4">
           Loading Blueprint...
@@ -156,7 +156,7 @@ export default function DSATracker() {
 
   if (!session) {
     return (
-      <div className="min-h-screen w-screen flex flex-col items-center justify-center bg-creamy-bg dark:bg-matte-bg relative overflow-hidden px-4">
+      <div className="min-h-[100dvh] w-screen flex flex-col items-center justify-center bg-creamy-bg dark:bg-matte-bg relative overflow-hidden px-4">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-neutral-400/10 dark:bg-neutral-800/20 blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-neutral-300/10 dark:bg-neutral-700/20 blur-3xl pointer-events-none"></div>
 
@@ -165,7 +165,7 @@ export default function DSATracker() {
 
         <div className="w-full max-w-md z-10 space-y-8">
           <div className="text-center space-y-2">
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
@@ -173,7 +173,7 @@ export default function DSATracker() {
             >
               O(1)
             </motion.h1>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
@@ -183,7 +183,7 @@ export default function DSATracker() {
             </motion.p>
           </div>
 
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.4 }}
@@ -194,11 +194,10 @@ export default function DSATracker() {
               <button
                 type="button"
                 onClick={() => { setAuthMode("signin"); setError(""); }}
-                className={`flex-1 text-center font-sans text-sm tracking-wider uppercase pb-2 transition-colors relative cursor-pointer ${
-                  authMode === "signin" 
-                    ? "font-semibold text-black dark:text-white" 
+                className={`flex-1 text-center font-sans text-sm tracking-wider uppercase pb-2 transition-colors relative cursor-pointer ${authMode === "signin"
+                    ? "font-semibold text-black dark:text-white"
                     : "text-gray-400 hover:text-gray-600 dark:text-matte-muted dark:hover:text-gray-300"
-                }`}
+                  }`}
               >
                 Sign In
                 {authMode === "signin" && (
@@ -208,11 +207,10 @@ export default function DSATracker() {
               <button
                 type="button"
                 onClick={() => { setAuthMode("signup"); setError(""); }}
-                className={`flex-1 text-center font-sans text-sm tracking-wider uppercase pb-2 transition-colors relative cursor-pointer ${
-                  authMode === "signup" 
-                    ? "font-semibold text-black dark:text-white" 
+                className={`flex-1 text-center font-sans text-sm tracking-wider uppercase pb-2 transition-colors relative cursor-pointer ${authMode === "signup"
+                    ? "font-semibold text-black dark:text-white"
                     : "text-gray-400 hover:text-gray-600 dark:text-matte-muted dark:hover:text-gray-300"
-                }`}
+                  }`}
               >
                 Register
                 {authMode === "signup" && (
@@ -280,7 +278,7 @@ export default function DSATracker() {
               </div>
 
               {error && (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="font-sans text-xs text-rose-500 border border-rose-500/20 bg-rose-500/5 p-3 rounded-md"
@@ -312,15 +310,15 @@ export default function DSATracker() {
   const progress =
     activeTopic.problems.length > 0
       ? Math.round(
-          (activeTopic.problems.filter((p) => completed.has(p.id)).length /
-            activeTopic.problems.length) *
-            100,
-        )
+        (activeTopic.problems.filter((p) => completed.has(p.id)).length /
+          activeTopic.problems.length) *
+        100,
+      )
       : 0;
 
   // Main Dashboard UI
   return (
-    <div className="flex h-screen overflow-hidden relative">
+    <div className="flex h-[100dvh] overflow-hidden relative">
       {/* Sidebar Backdrop for Mobile */}
       <AnimatePresence>
         {isSidebarOpen && (
@@ -334,9 +332,8 @@ export default function DSATracker() {
         )}
       </AnimatePresence>
 
-      <aside className={`w-72 flex-shrink-0 border-r border-creamy-border dark:border-matte-border bg-creamy-bg dark:bg-matte-bg flex flex-col pt-8 fixed lg:relative inset-y-0 left-0 z-30 transform transition-transform duration-300 ease-in-out ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-      }`}>
+      <aside className={`w-72 flex-shrink-0 border-r border-creamy-border dark:border-matte-border bg-creamy-bg dark:bg-matte-bg flex flex-col pt-8 fixed lg:relative inset-y-0 left-0 z-30 h-[100dvh] lg:h-auto transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        }`}>
         {/* Mobile Close Button */}
         <button
           onClick={() => setIsSidebarOpen(false)}
@@ -371,11 +368,10 @@ export default function DSATracker() {
                         setActiveTopic(topic);
                         setIsSidebarOpen(false); // Close sidebar on mobile selection
                       }}
-                      className={`w-full text-left px-2 py-2 rounded-md font-sans text-sm transition-all duration-200 flex items-center justify-between group cursor-pointer ${
-                        activeTopic.id === topic.id
+                      className={`w-full text-left px-2 py-2 rounded-md font-sans text-sm transition-colors duration-200 flex items-center justify-between group cursor-pointer ${activeTopic.id === topic.id
                           ? "bg-black text-white dark:bg-white dark:text-black shadow-sm"
                           : "text-gray-700 dark:text-gray-400 hover:bg-creamy-hover dark:hover:bg-matte-surface"
-                      }`}
+                        }`}
                     >
                       <span className="truncate">{topic.name}</span>
                       {activeTopic.id === topic.id && (
@@ -446,7 +442,7 @@ export default function DSATracker() {
           </div>
         </header>
 
-        <header className="px-6 lg:px-10 pt-6 lg:pt-12 pb-4 lg:pb-6 w-full lg:w-[80%] mx-auto">
+        <header className="px-6 lg:px-10 pt-4 lg:pt-12 pb-2 lg:pb-6 w-full lg:w-[80%] mx-auto">
           <motion.div
             key={activeTopic.id}
             initial={{ opacity: 0, y: 10 }}
@@ -469,14 +465,13 @@ export default function DSATracker() {
 
             {/* Right Tactile Border */}
             <div className="absolute right-0 top-0 bottom-0 w-4 lg:w-10 2xl:w-20 pattern-vertical-stripes border-x border-creamy-border dark:border-matte-border/50 opacity-40 lg:opacity-60 pointer-events-none"></div>
-            
+
             <div className="max-w-5xl mx-auto px-8 lg:px-16 py-2">
               <AnimatePresence mode="popLayout">
                 {activeTopic.problems.map((problem, idx) => {
                   const isDone = completed.has(problem.id);
                   return (
                     <motion.div
-                      layout
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, scale: 0.95 }}
@@ -487,11 +482,10 @@ export default function DSATracker() {
                       <div className="flex items-center gap-4 xl:gap-8 py-3 border-b border-creamy-border dark:border-matte-border/50 transition-all duration-150 ease-out hover:py-5 lg:hover:py-7">
                         <button
                           onClick={(e) => toggleProblem(problem.id, e)}
-                          className={`flex-shrink-0 w-5 h-5 rounded-full border flex items-center justify-center transition-colors duration-200 ${
-                            isDone
+                          className={`flex-shrink-0 w-5 h-5 rounded-full border flex items-center justify-center transition-colors duration-200 ${isDone
                               ? "bg-black border-black dark:bg-white dark:border-white"
                               : "border-gray-300 dark:border-gray-600 hover:border-black dark:hover:border-white"
-                          }`}
+                            }`}
                         >
                           {isDone && (
                             <Check
@@ -505,31 +499,28 @@ export default function DSATracker() {
                           href={problem.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`flex-1 flex items-center justify-between transition-all duration-300 ${
-                            isDone
+                          className={`flex-1 flex items-center justify-between transition-opacity duration-300 ${isDone
                               ? "opacity-40"
                               : "opacity-100 hover:opacity-70"
-                          }`}
+                            }`}
                         >
                           <span
-                            className={`text-base md:text-lg lg:text-xl 2xl:text-2xl tracking-tight relative ${
-                              isDone
+                            className={`text-base md:text-lg lg:text-xl 2xl:text-2xl tracking-tight relative ${isDone
                                 ? "line-through decoration-1 decoration-gray-500"
                                 : ""
-                            }`}
+                              }`}
                           >
                             {problem.title}
                           </span>
 
                           <div className="flex items-center gap-3 font-sans">
                             <span
-                              className={`text-[8px] md:text-[10px] uppercase tracking-widest px-2 py-1 rounded-sm border ${
-                                problem.difficulty === "easy"
+                              className={`text-[8px] md:text-[10px] uppercase tracking-widest px-2 py-1 rounded-sm border ${problem.difficulty === "easy"
                                   ? "border-emerald-200 text-emerald-700 dark:border-emerald-900/50 dark:text-emerald-400"
                                   : problem.difficulty === "medium"
                                     ? "border-amber-200 text-amber-700 dark:border-amber-900/50 dark:text-amber-400"
                                     : "border-rose-200 text-rose-700 dark:border-rose-900/50 dark:text-rose-400"
-                              }`}
+                                }`}
                             >
                               {problem.difficulty}
                             </span>

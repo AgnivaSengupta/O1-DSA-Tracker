@@ -22,7 +22,7 @@
 }
 
 @layer base {
-    @media (any-hover: hover) and (pointer: fine) {
+    @media (min-width: 1024px) {
         * {
             cursor: none !important;
         }
