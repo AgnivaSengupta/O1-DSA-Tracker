@@ -5,45 +5,62 @@ import { useEffect, useRef, useState } from 'react';
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [isClickable, setIsClickable] = useState(false);
+  const [isHidden, setIsHidden] = useState(true);
 
   useEffect(() => {
-      const cursor = cursorRef.current;
-      if (!cursor) return;
-  
-      const updatePosition = (e: MouseEvent) => {
-        cursor.style.opacity = '1';
-        cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
-      };
-  
-      // Use mouseleave/mouseenter instead of mouseout for perfect window detection
-      const handleMouseLeave = () => {
-        cursor.style.opacity = '0';
-      };
-  
-      const handleMouseEnter = () => {
-        cursor.style.opacity = '1';
-      };
-  
-      const handleMouseOver = (e: MouseEvent) => {
-        const target = e.target as HTMLElement;
-        const isHoveringClickable = target.closest('a, button, input, select, [role="button"]');
-        setIsClickable(!!isHoveringClickable);
-      };
-  
-      window.addEventListener('mousemove', updatePosition, { passive: true });
-      window.addEventListener('mouseover', handleMouseOver, { passive: true });
-      
-      // Attach these specifically to the document element
-      document.documentElement.addEventListener('mouseleave', handleMouseLeave);
-      document.documentElement.addEventListener('mouseenter', handleMouseEnter);
-  
+    const checkDevice = () => {
+      const isTouchOrSmall = window.matchMedia('(max-width: 1023px), (pointer: coarse)').matches;
+      setIsHidden(isTouchOrSmall);
+    };
+
+    checkDevice();
+    window.addEventListener('resize', checkDevice);
+
+    // If device is touch or small, we stop listener attachment
+    const isTouchOrSmall = window.matchMedia('(max-width: 1023px), (pointer: coarse)').matches;
+    if (isTouchOrSmall) {
       return () => {
-        window.removeEventListener('mousemove', updatePosition);
-        window.removeEventListener('mouseover', handleMouseOver);
-        document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
-        document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
+        window.removeEventListener('resize', checkDevice);
       };
-    }, []);
+    }
+
+    const cursor = cursorRef.current;
+    if (!cursor) return;
+
+    const updatePosition = (e: MouseEvent) => {
+      cursor.style.opacity = '1';
+      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    };
+
+    const handleMouseLeave = () => {
+      cursor.style.opacity = '0';
+    };
+
+    const handleMouseEnter = () => {
+      cursor.style.opacity = '1';
+    };
+
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const isHoveringClickable = target.closest('a, button, input, select, [role="button"]');
+      setIsClickable(!!isHoveringClickable);
+    };
+
+    window.addEventListener('mousemove', updatePosition, { passive: true });
+    window.addEventListener('mouseover', handleMouseOver, { passive: true });
+    document.documentElement.addEventListener('mouseleave', handleMouseLeave);
+    document.documentElement.addEventListener('mouseenter', handleMouseEnter);
+
+    return () => {
+      window.removeEventListener('resize', checkDevice);
+      window.removeEventListener('mousemove', updatePosition);
+      window.removeEventListener('mouseover', handleMouseOver);
+      document.documentElement.removeEventListener('mouseleave', handleMouseLeave);
+      document.documentElement.removeEventListener('mouseenter', handleMouseEnter);
+    };
+  }, []);
+
+  if (isHidden) return null;
 
   return (
     <div
