@@ -5,6 +5,7 @@ import { ExternalLink, ChevronRight, Check, Sun, Moon, LogOut, Loader2, User, Ma
 import { dsaData, Topic } from "@/lib/data";
 import { getSolvedProblems, toggleProblemSolved } from "@/app/actions";
 import { authClient } from "@/lib/auth-client";
+import Pomodoro from "@/components/pomodoro";
 
 export default function DSATracker() {
   const [activeTopic, setActiveTopic] = useState<Topic>(dsaData[0].topics[0]);
@@ -303,6 +304,7 @@ export default function DSATracker() {
             </form>
           </motion.div>
         </div>
+        <Pomodoro />
       </div>
     );
   }
@@ -549,6 +551,7 @@ export default function DSATracker() {
           </div>
         </div>
       </main>
+      <Pomodoro />
     </div>
   );
 }
